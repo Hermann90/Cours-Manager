@@ -5,6 +5,7 @@
  */
 package com.hermann90.CoursManager.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
