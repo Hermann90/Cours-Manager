@@ -12,8 +12,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  *
@@ -57,11 +59,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         /*by default, spring security generates a synchronized token. it must be deactivated to 
         allow other applications to connect to the back-end*/
         http.csrf().disable();
+        
+        // ----- disable session-based security ------
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        //http.formLogin();
         http.authorizeRequests().antMatchers("/login/**", "/register/**").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.POST,"/tasks/**").hasAuthority("ADMIN");
         
-        http.formLogin();
+       
         http.authorizeRequests().anyRequest().authenticated();
+        //  ----- add a filter -----
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager()));
+        http.addFilterBefore(new JWTAuthorizationFilter() , UsernamePasswordAuthenticationFilter.class);
     }
     
     

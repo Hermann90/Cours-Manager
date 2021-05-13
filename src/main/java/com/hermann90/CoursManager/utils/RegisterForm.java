@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- *
+ * This class is use to perform password confirmations ....
+ * 
  * @author hermann90
  */
 @Data @AllArgsConstructor @NoArgsConstructor @ToString
